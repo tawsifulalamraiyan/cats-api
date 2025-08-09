@@ -4,9 +4,9 @@ import mongodb from "./config/db";
 import Cats_data from "./modal/catsmodal";
 
 const app = new Elysia();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-app.use(cors()); // allow all origins
+app.use(cors());
 
 app.get("/", () => "Hello from Elysia!");
 
@@ -25,12 +25,10 @@ app.post("/api/post", async ({ body }: { body: any }) => {
   return cats_data;
 });
 
-await mongodb();
+await mongodb(); // make sure this connects before listen
 
 app.listen(PORT);
 
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}: http://localhost:${PORT}`
-);
+console.log(`Elysia running on http://localhost:${PORT}`);
 
-export default app.handle;
+export default app.handle; // this line is optional on Render
